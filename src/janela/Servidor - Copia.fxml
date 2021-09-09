@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+<Pane id="Servidor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="492.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="janela.ServidorController">
+   <children>
+      <TextField fx:id="txtHost" layoutX="20.0" layoutY="31.0" prefHeight="25.0" prefWidth="320.0" />
+      <TextField fx:id="txtPorta" layoutX="348.0" layoutY="31.0" prefHeight="25.0" prefWidth="97.0" />
+      <TextField fx:id="txtTopic" layoutX="453.0" layoutY="31.0" prefHeight="25.0" prefWidth="128.0" />
+      <Button layoutX="19.0" layoutY="141.0" mnemonicParsing="false" onAction="#conectar" prefHeight="25.0" prefWidth="250.0" text="Conectar" />
+      <Button layoutX="331.0" layoutY="141.0" mnemonicParsing="false" onAction="#desconectar" prefHeight="25.0" prefWidth="250.0" text="Desconectar" />
+      <Label layoutX="20.0" layoutY="14.0" text="Host" />
+      <Label layoutX="348.0" layoutY="14.0" text="Porta" />
+      <Label layoutX="453.0" layoutY="14.0" text="Comunicador" />
+      <Label fx:id="lblMensagem" layoutX="18.0" layoutY="107.0" prefHeight="17.0" prefWidth="563.0" />
+      <TextArea fx:id="textConsole" layoutX="19.0" layoutY="172.0" prefHeight="313.0" prefWidth="563.0" />
+      <CheckBox fx:id="cbBanco" layoutX="20.0" layoutY="66.0" mnemonicParsing="false" text="Banco de Dados (se desmarcado segue padrão)" />
+      <TextField fx:id="txtServerName" layoutX="20.0" layoutY="106.0" prefHeight="25.0" prefWidth="223.0" />
+      <Label layoutX="23.0" layoutY="86.0" text="Servidor" />
+      <Label layoutX="453.0" layoutY="86.0" text="Senha" />
+      <Label layoutX="348.0" layoutY="86.0" text="Usuário" />
+      <TextField fx:id="txtUser" layoutX="351.0" layoutY="105.0" prefHeight="25.0" prefWidth="97.0" />
+      <PasswordField fx:id="pswSenha" layoutX="453.0" layoutY="105.0" prefHeight="25.0" prefWidth="128.0" />
+      <TextField fx:id="txtSID" layoutX="249.0" layoutY="105.0" prefHeight="25.0" prefWidth="97.0" />
+      <Label layoutX="249.0" layoutY="86.0" text="Banco" />
+   </children>
+</Pane>
