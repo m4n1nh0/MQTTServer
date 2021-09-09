@@ -175,7 +175,9 @@ public class ConnectionBD {
             listed.Xf = rs.getDouble("Xf");
             listed.Xi = rs.getDouble("Xi");
 
-            matches.add(listed);
+            if (!matches.contains(listed)){
+            	matches.add(listed);
+            }
         }
 
         return matches;
