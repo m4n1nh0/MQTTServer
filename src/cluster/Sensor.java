@@ -1,6 +1,9 @@
 package cluster;
 
+import java.util.List;
+
 public class Sensor {
+
 	public String nome;
 	public String Command;
 	public String Type;
@@ -200,10 +203,4 @@ public class Sensor {
 	public void setHead_count(int head_count) {
 		this.head_count = head_count;
 	}
-
-	public double Distancia(double x1, double y1, double x2, double y2){
-		double distancia = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-		return distancia;
-	}
-
 }

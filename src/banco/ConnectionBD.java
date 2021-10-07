@@ -146,13 +146,13 @@ public class ConnectionBD {
 
     }
 
-    public List<Sensor> listSenorsWithDate(Date date) throws SQLException {
-        PreparedStatement stmt = ConnectionBD.getConnectionBD().prepareStatement("SELECT * FROM Customers where date = '?'");
-        stmt.setString(1,date.toString());
+    public ArrayList<Sensor> listSenorsWithDate(String currentDateTime, ArrayList<Sensor> sensors) throws SQLException {
+        PreparedStatement stmt = ConnectionBD.getConnectionBD().prepareStatement("SELECT * FROM sensors where date = '?'");
+        stmt.setString(1,currentDateTime);
 
         ResultSet rs = stmt.executeQuery();
 
-        List<Sensor> matches = new ArrayList<Sensor>();
+        ArrayList<Sensor> matches = new ArrayList<Sensor>();
         while ( rs.next() ) {
         	Sensor listed = new Sensor();
             listed.id = rs.getInt("id");
@@ -179,8 +179,8 @@ public class ConnectionBD {
             	matches.add(listed);
             }
         }
-
-        return matches;
+        sensors = matches;
+        return sensors;
     }
 
     public Sensor RetSensor(String sensor){
