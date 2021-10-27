@@ -52,30 +52,80 @@ public class Cluster extends Thread {
     		}
     	}
     	//Executando tarefa
+    	// Ainda pode ser ajustado no decorrer do progresso, seguir o artigo como base porem estou adaptando
         while (true) {
-        	for (Sensor sensor : sensors) { //carrego os sensores do banco
-    			if (sensor.getBaterylevel() > 0){ // faz sempre que os sensores da lista tiverem bateria
-    				for (Sensor sennext : sensors){ // comparo com sensores da lista
+        	for (Sensor bases : base) { //carrego as estaçoes base do banco
+    			for (Sensor sensor : sensors){ // verifico os sensores proximos das BS
+    	    		if (sensor.getBaterylevel() > 0){ // faz sempre que os sensores da lista tiverem bateria
     					if(group.size() < QTD_MAX_SENSORES){ // verifico o tamanho do grupo
-    						double distance = Distancia(sensor.lgx1,sensor.lgy1,sennext.lgx1,sennext.lgy1);
-    						if (distance < sensor.radius && distance < sennext.radius){
-    							group.add(sennext);
+    						double distance = Distancia(bases.lgx1,bases.lgy1,sensor.lgx1,sensor.lgy1);
+    						if (distance < sensor.radius && distance < bases.radius){
+    							if (!sensors_.contains(group.contains(sensor))){
+    								group.add(sensor); //Adiciono os proximos da estação base em lista cada um
+    												   // Analisar se seria valido marcar no objeto quem é a base
+    							}
     						}
     					}
     				}
-    				sensors_.add(group); //adiciono o grupo a lista de grupos
+    	    		if (!group.isEmpty()){ //adiciono somente grupo com sensor proximo
+        				sensors_.add(group); //adiciono o grupo a lista de grupos
+        		        group = new ArrayList<Sensor>();
+    	    		}
     			}
-    			//fazer a lista de clusters
-
-    			//enviar msg mqtt para os sensores saberem quem são seus clusters e a trilha de comunicação
-    			//pretendo usar distancia para passar o proximo
-                else {//Carga = 0
-                	InicializarVariavis(connbd,sensors);
-                }
-                while (System.currentTimeMillis() < (inicioCluster + (TRound * (QTD_Round + 1)))) {
-                }
-                QTD_Round++;
     		}
+
+        	for (ArrayList<Sensor> sensores : sensors_){ //verificar os proximos da estação base e setar quem será o cluster no momento
+        		for (Sensor sengrupo : sensores){
+        			for (ArrayList<Sensor> next_sensores : sensors_){
+        				for (Sensor nextsengrup : next_sensores ){
+        					if (nextsengrup != sengrupo){
+        						double distance = Distancia(sengrupo.lgx1,sengrupo.lgy1,nextsengrup.lgx1,nextsengrup.lgy1);
+        						if (distance < nextsengrup.radius && distance < sengrupo.radius){
+        							if (!sensors_.contains(sensores.contains(nextsengrup))){
+        								nextsengrup.setHead(sengrupo);
+        								sensores.add(nextsengrup); //Adiciono os proximos da estação base em lista cada um com os demais proximos
+        								sensors_.remove(next_sensores); //Removo o grupo daquele sensor e deixo o primeiro da lista como cluster
+        							}
+        						}
+        					}
+        				}
+        			}
+        		}
+        	}
+			//fazer a lista de clusters
+			for (Sensor sensor : sensors){ // Percorro todos os sensores
+				if (!sensor.getType().equals("bs")){
+					for (ArrayList<Sensor> sensores : sensors_){
+						Sensor head = new Sensor();
+						for (Sensor sengrupo : sensores){
+							if (sengrupo.getHead() == null){ // verifico quem não é cluster head
+								head = sengrupo;
+								sengrupo.head_count+=1; // aponto quantas vezes o sensor foi cluster head
+								sengrupo.round+=1; // contabilizo os rounds que o sensor está como cluster
+												   // penso em resetar quando for maior que 4 ou algum outro parametro para que outro sensor proximo caso exista possa ser CH
+												   // Tenho que mudar o banco para trazer essas informaçoes
+							}
+						}
+						if (!sensors_.contains(sensor)){ // verifico se o sensor não já encontra-se na lista
+    						double distance = Distancia(sensor.lgx1,sensor.lgy1,head.lgx1,head.lgy1);
+    						if (distance < sensor.radius && distance < head.radius){
+    							if (!sensors_.contains(sensores.contains(sensor))){
+    								sensor.setHead(head); // Aponto no sensor quem é seu cluster head
+    								sensores.add(sensor); //Adiciono o sensor no grupo cluster
+    							}
+    						}
+						}
+					}
+	    		}
+			}
+			//enviar msg mqtt para os sensores saberem quem são seus clusters e a trilha de comunicação
+
+			// ainda não pensei como fazer essa parte, ver com Kalil o que ele acha das ideias que poderei ter proxima semana
+
+			//pretendo usar distancia para passar o proximo
+            while (System.currentTimeMillis() < (inicioCluster + (TRound * (QTD_Round + 1)))) {
+            }
+            QTD_Round++;
 
         }
     }

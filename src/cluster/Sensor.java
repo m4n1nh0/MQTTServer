@@ -12,7 +12,7 @@ public class Sensor {
 	public int idSensor;
 	public int baterypercent;
 	public int round;
-	public int head;
+	public Sensor head;
 	public int cluster_members;
 	public int head_count;
 
@@ -180,11 +180,11 @@ public class Sensor {
 		this.round = round;
 	}
 
-	public int getHead() {
+	public Sensor getHead() {
 		return head;
 	}
 
-	public void setHead(int head) {
+	public void setHead(Sensor head) {
 		this.head = head;
 	}
 
