@@ -3,7 +3,6 @@ package banco;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import cluster.Sensor;
 
@@ -184,8 +183,12 @@ public class ConnectionBD {
     }
 
     public Sensor RetSensor(String sensor){
-
-    	return null;
+    	Sensor Retsensor = new Sensor();
+    	String[] command = sensor.split(";");
+		if (command.length > 2){
+			//mover sensor
+		}
+    	return Retsensor;
     }
 
 }

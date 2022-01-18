@@ -1,6 +1,5 @@
 package cluster;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -37,7 +36,7 @@ public class Cluster extends Thread {
     // Iniciando o processo de seleção do CH baseado no artigo https://ieeexplore.ieee.org/document/8587930
     // Exemplo Thread http://www.inf.ufes.br/~pdcosta/ensino/2008-1-sistemas-operacionais/Slides/Aula17-1slide.pdf
     // Exemplo Thread https://www.caelum.com.br/apostila-java-orientacao-objetos/apendice-programacao-concorrente-e-threads#e-as-classes-anonimas
-    public void run (ConnectionBD connbd) throws SQLException {
+    public void run (ConnectionBD connbd, Connection mqtt) throws SQLException {
         Date date = new Date(0);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
         String currentDateTime = format.format(date);
@@ -53,6 +52,7 @@ public class Cluster extends Thread {
     	}
     	//Executando tarefa
     	// Ainda pode ser ajustado no decorrer do progresso, seguir o artigo como base porem estou adaptando
+    	// Ver quanto tempo leva para montar a rede do jeito que executei e a forma do leach
         while (true) {
         	for (Sensor bases : base) { //carrego as estaçoes base do banco
     			for (Sensor sensor : sensors){ // verifico os sensores proximos das BS
@@ -119,9 +119,16 @@ public class Cluster extends Thread {
 	    		}
 			}
 			//enviar msg mqtt para os sensores saberem quem são seus clusters e a trilha de comunicação
+			for (Sensor sensor : sensors){ // Percorro todos os sensores
+				if (!sensor.getType().equals("bs")){
+					if (sensor.getHead() != null){
 
+					}
+	    		}
+			}
+
+			// mandar broadcast para todo mundo
 			// ainda não pensei como fazer essa parte, ver com Kalil o que ele acha das ideias que poderei ter proxima semana
-
 			//pretendo usar distancia para passar o proximo
             while (System.currentTimeMillis() < (inicioCluster + (TRound * (QTD_Round + 1)))) {
             }
